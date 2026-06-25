@@ -1,26 +1,139 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────
+   Design tokens — editorial light
+   ───────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper:        #f7f5f0;
+  --paper-2:      #efece4;
+  --ink:          #141820;
+  --ink-soft:     #2a3140;
+  --muted:        #5c6470;
+  --muted-2:      #8a919c;
+  --line:         #ddd8cc;
+  --line-strong:  #c9c2b4;
+
+  --accent:       #1e5f6b;
+  --accent-deep:  #134550;
+  --accent-gold:  #b89b5e;
+  --accent-wash:  #e8f0f2;
+
+  --shadow-sm: 0 1px 2px rgba(20,24,32,0.04), 0 2px 8px rgba(20,24,32,0.05);
+  --shadow-md: 0 8px 28px rgba(20,24,32,0.08), 0 1px 4px rgba(20,24,32,0.04);
+  --shadow-lg: 0 20px 56px rgba(20,24,32,0.12), 0 4px 16px rgba(20,24,32,0.06);
+
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 16px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper:       var(--paper);
+  --color-paper-2:     var(--paper-2);
+  --color-ink:         var(--ink);
+  --color-ink-soft:    var(--ink-soft);
+  --color-muted:       var(--muted);
+  --color-line:        var(--line);
+  --color-accent:      var(--accent);
+  --font-sans:         var(--font-inter);
+  --font-serif:        var(--font-fraunces);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* { border-color: var(--line); }
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #cfcec7 transparent;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--accent-wash); color: var(--accent-deep); }
+
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cfcec7; border-radius: 9999px; }
+
+/* Lenis smooth scroll */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ─────────────────────────────────────────────
+   Type helpers
+   ───────────────────────────────────────────── */
+.font-serif { font-family: var(--font-fraunces), Georgia, serif; }
+
+.display {
+  font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+}
+
+.eyebrow {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+}
+
+.btn-classic {
+  border-radius: var(--r-sm);
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+/* Accent underline for inline emphasis */
+.ink-accent { color: var(--accent); }
+
+/* ─────────────────────────────────────────────
+   Motion utilities
+   ───────────────────────────────────────────── */
+
+/* TextReveal: each line lives in an overflow-hidden mask */
+.reveal-line { overflow: hidden; display: block; }
+
+/* Hairline divider */
+.hairline { height: 1px; background: var(--line); width: 100%; }
+
+/* Marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+.marquee-track[data-reverse="true"] { animation-direction: reverse; }
+.marquee-pause:hover .marquee-track { animation-play-state: paused; }
+
+.stat-number { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+/* Soft accent glow blob */
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+  html { scroll-behavior: auto; }
 }
