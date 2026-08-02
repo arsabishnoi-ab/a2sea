@@ -22,7 +22,6 @@ export default function TermsPage() {
           <h1 className="display mt-6 text-[clamp(2.4rem,6vw,4rem)] text-[var(--ink)]">
             Terms &amp; Conditions
           </h1>
-          <p className="mt-6 text-sm text-[var(--muted-2)]">Last updated: {termsMeta.lastUpdated}</p>
           <p className="mt-8 text-base leading-relaxed text-[var(--muted)]">
             These terms govern all services provided by {siteConfig.brandName}, a web studio based in{" "}
             {siteConfig.location.city}, India. Please read them carefully before starting a project.

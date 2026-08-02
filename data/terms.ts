@@ -7,7 +7,6 @@ export const termsMeta = {
   title: "Terms & Conditions",
   description:
     "Terms and conditions for a2sea — website pricing, hosting, post-launch support, and our no-refund policy.",
-  lastUpdated: "August 2, 2026",
 };
 
 export const termsSections: TermsSection[] = [
@@ -96,7 +95,7 @@ export const termsSections: TermsSection[] = [
   {
     title: "11. Changes to these terms",
     paragraphs: [
-      "We may update these Terms & Conditions from time to time. The version published on this page applies to new engagements from the date shown above.",
+      "We may update these Terms & Conditions from time to time. The version published on this page applies to new engagements from the time it is posted.",
       "For questions about these terms, contact us through the details on our website.",
     ],
   },
