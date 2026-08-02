@@ -9,7 +9,7 @@ function getSiteUrl(): string {
 /** Raw phone in international format, digits only — used for wa.me + tel: */
 const PHONE_DIGITS = (process.env.NEXT_PUBLIC_PHONE?.trim() || "918310054529").replace(/[^\d]/g, "");
 const PHONE_DISPLAY = "+91 83100 54529";
-const EMAIL = process.env.NEXT_PUBLIC_EMAIL?.trim() || "arsatwospoon@gmail.com";
+const EMAIL = process.env.NEXT_PUBLIC_EMAIL?.trim() || "a2sea.in@gmail.com";
 
 const WHATSAPP_MESSAGE =
   "Hi a2sea — I'd like to talk about building a website / system for my business.";

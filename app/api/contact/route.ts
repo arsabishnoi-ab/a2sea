@@ -29,7 +29,7 @@ export async function POST(request: Request) {
   }
 
   const apiKey = process.env.RESEND_API_KEY?.trim();
-  const to = process.env.CONTACT_TO_EMAIL?.trim() || "arsatwospoon@gmail.com";
+  const to = process.env.CONTACT_TO_EMAIL?.trim() || "a2sea.in@gmail.com";
   // Resend requires a verified sender; falls back to their onboarding domain.
   const from = process.env.CONTACT_FROM_EMAIL?.trim() || "a2sea <onboarding@resend.dev>";
 
