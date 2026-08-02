@@ -64,8 +64,7 @@ export function About() {
 
         <Reveal delay={0.15} y={20}>
           <p className="mt-10 max-w-xl text-base leading-relaxed text-[var(--paper)]/60">
-            <span className="text-[var(--paper)]">{brandName}</span> is a web studio in {location.area},{" "}
-            {location.city}. We work with hotels, cafés, restaurants, retail, and ecommerce — the
+            <span className="text-[var(--paper)]">{brandName}</span> is a web studio in {location.city}. We work with hotels, cafés, restaurants, retail, and ecommerce — the
             businesses whose revenue depends on being found and chosen online.
           </p>
         </Reveal>

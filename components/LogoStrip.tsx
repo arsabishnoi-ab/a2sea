@@ -1,6 +1,6 @@
 import { Marquee } from "@/components/motion/Marquee";
 import { Reveal } from "@/components/motion/Reveal";
-import { projects } from "@/data/projects";
+import { allProjects } from "@/data/projects";
 
 export function LogoStrip() {
   return (
@@ -11,7 +11,7 @@ export function LogoStrip() {
         </p>
       </Reveal>
       <Marquee duration={38}>
-        {projects.map((p) => (
+        {allProjects.map((p) => (
           <span key={p.slug} className="flex items-center">
             <span className="display text-2xl text-[var(--ink)]/35 transition-colors hover:text-[var(--ink)] md:text-4xl">
               {p.name}

@@ -80,7 +80,7 @@ export function Contact() {
                   <div className="flex items-center gap-4 text-[var(--ink)]">
                     <span className="text-xs uppercase tracking-[0.16em] text-[var(--muted-2)]">Location</span>
                     <span className="ml-auto font-medium">
-                      {siteConfig.location.area}, {siteConfig.location.city}
+                      {siteConfig.location.city}
                     </span>
                   </div>
                 </div>

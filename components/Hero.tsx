@@ -35,7 +35,7 @@ export function Hero() {
           transition={{ duration: 0.6, ease: EASE }}
         >
           <span className="inline-flex h-2 w-2 rounded-full bg-[var(--accent)]" />
-          <span className="eyebrow">Web studio · {location.area}, {location.city}</span>
+          <span className="eyebrow">Web studio · {location.city}</span>
         </motion.div>
 
         {/* Headline — masked line reveal */}

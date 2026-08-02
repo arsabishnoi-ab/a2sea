@@ -135,7 +135,7 @@ export function Header() {
                 Chat on WhatsApp
               </a>
               <p className="text-center text-xs text-[var(--muted)]">
-                {siteConfig.contact.phoneDisplay} · {siteConfig.location.area}, {siteConfig.location.city}
+                {siteConfig.contact.phoneDisplay} · {siteConfig.location.city}
               </p>
             </div>
           </motion.div>

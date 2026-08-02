@@ -87,7 +87,7 @@ export function Footer() {
               <a href={siteConfig.contact.emailHref} className="transition-colors hover:text-[var(--ink)]">
                 {siteConfig.contact.email}
               </a>
-              <p>{location.area}, {location.city}, India</p>
+              <p>{location.city}, India</p>
             </div>
           </div>
         </div>
@@ -95,7 +95,12 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col items-start gap-2 border-t border-[var(--line)] py-7 md:flex-row md:items-center md:justify-between">
           <p className="text-xs text-[var(--muted-2)]">© {new Date().getFullYear()} {brandName}. All rights reserved.</p>
-          <p className="text-xs text-[var(--muted-2)]">Websites · Software · Google Presence</p>
+          <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-6">
+            <Link href="/terms" className="text-xs text-[var(--muted-2)] transition-colors hover:text-[var(--ink)]">
+              Terms &amp; Conditions
+            </Link>
+            <p className="text-xs text-[var(--muted-2)]">Websites · Software · Google Presence</p>
+          </div>
         </div>
       </div>
     </footer>

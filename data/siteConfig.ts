@@ -30,10 +30,9 @@ export const siteConfig = {
 
   location: {
     city: "Bangalore",
-    area: "Jayanagar",
     region: "Karnataka",
     country: "India",
-    full: "Jayanagar, Bangalore, Karnataka, India",
+    full: "Bangalore, Karnataka, India",
   },
 
   contact: {
@@ -75,7 +74,7 @@ export const siteConfig = {
     keywords: [
       "a2sea",
       "web developer Bangalore",
-      "website designer Jayanagar",
+      "website designer Bangalore",
       "hotel website development",
       "hotel booking website",
       "restaurant website design",
@@ -106,7 +105,7 @@ export const siteConfig = {
   },
 
   stats: [
-    { value: "5", label: "Live builds" },
+    { value: "11+", label: "Live builds" },
     { value: "4", label: "Sectors" },
     { value: "100%", label: "Custom" },
   ] as const,
