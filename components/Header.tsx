@@ -10,13 +10,26 @@ const NAV = siteConfig.nav.filter((n) => n.href !== "#contact");
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [overDark, setOverDark] = useState(true);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 24);
+    const fn = () => {
+      setScrolled(window.scrollY > 24);
+      const layers = document.getElementById("work-layers");
+      if (!layers) {
+        setOverDark(window.scrollY < window.innerHeight * 0.85);
+        return;
+      }
+      setOverDark(layers.getBoundingClientRect().bottom > 80);
+    };
     fn();
     window.addEventListener("scroll", fn, { passive: true });
-    return () => window.removeEventListener("scroll", fn);
+    window.addEventListener("resize", fn);
+    return () => {
+      window.removeEventListener("scroll", fn);
+      window.removeEventListener("resize", fn);
+    };
   }, []);
 
   useEffect(() => {
@@ -27,7 +40,7 @@ export function Header() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled
+        scrolled && !overDark
           ? "border-b border-[var(--line)] bg-[var(--paper)]/80 backdrop-blur-xl"
           : "border-b border-transparent bg-transparent"
       }`}
@@ -48,7 +61,7 @@ export function Header() {
             height={44}
             className="h-9 w-auto object-contain md:h-11"
           />
-          <span className="text-[1.6rem] font-bold lowercase leading-none tracking-[-0.02em] text-[var(--ink)] md:text-[1.9rem]">
+          <span className={`text-[1.6rem] font-bold lowercase leading-none tracking-[-0.02em] md:text-[1.9rem] ${overDark ? "text-white" : "text-[var(--ink)]"}`}>
             a2sea
           </span>
         </Link>
@@ -60,7 +73,7 @@ export function Header() {
               key={item.href}
               href={item.href}
               className={`group relative text-[0.72rem] font-medium uppercase tracking-[0.14em] transition-colors duration-200 ${
-                scrolled ? "text-[var(--ink-soft)] hover:text-[var(--ink)]" : "text-white/75 hover:text-white"
+                overDark ? "text-white/75 hover:text-white" : "text-[var(--ink-soft)] hover:text-[var(--ink)]"
               }`}
             >
               {item.label.charAt(0) + item.label.slice(1).toLowerCase()}
@@ -70,9 +83,9 @@ export function Header() {
           <MagneticButton
             href="#contact"
             className={`btn-classic px-5 py-2.5 text-[0.72rem] uppercase tracking-[0.12em] ${
-              scrolled
-                ? "bg-[var(--ink)] text-[var(--paper)] hover:bg-[var(--accent-deep)]"
-                : "border border-white/30 bg-white/10 text-white backdrop-blur-sm hover:border-[var(--accent-gold)] hover:bg-white/15"
+              overDark
+                ? "border border-white/30 bg-white/10 text-white backdrop-blur-sm hover:border-[var(--accent-gold)] hover:bg-white/15"
+                : "bg-[var(--ink)] text-[var(--paper)] hover:bg-[var(--accent-deep)]"
             }`}
           >
             Get in touch
@@ -87,9 +100,9 @@ export function Header() {
           aria-label="Toggle menu"
           onClick={() => setOpen((v) => !v)}
         >
-          <span className={`h-px w-6 transition-all duration-300 ${scrolled ? "bg-[var(--ink)]" : "bg-white"} ${open ? "translate-y-[6px] rotate-45" : ""}`} />
-          <span className={`h-px w-6 transition-all duration-300 ${scrolled ? "bg-[var(--ink)]" : "bg-white"} ${open ? "opacity-0" : ""}`} />
-          <span className={`h-px w-6 transition-all duration-300 ${scrolled ? "bg-[var(--ink)]" : "bg-white"} ${open ? "-translate-y-[6px] -rotate-45" : ""}`} />
+          <span className={`h-px w-6 transition-all duration-300 ${overDark && !open ? "bg-white" : "bg-[var(--ink)]"} ${open ? "translate-y-[6px] rotate-45" : ""}`} />
+          <span className={`h-px w-6 transition-all duration-300 ${overDark && !open ? "bg-white" : "bg-[var(--ink)]"} ${open ? "opacity-0" : ""}`} />
+          <span className={`h-px w-6 transition-all duration-300 ${overDark && !open ? "bg-white" : "bg-[var(--ink)]"} ${open ? "-translate-y-[6px] -rotate-45" : ""}`} />
         </button>
       </div>
 

@@ -1,5 +1,6 @@
 import { Header }     from "@/components/Header";
 import { LogoIntro }  from "@/components/LogoIntro";
+import { WorkLayers } from "@/components/WorkLayers";
 import { LogoStrip }  from "@/components/LogoStrip";
 import { Services }   from "@/components/Services";
 import { Work }       from "@/components/Work";
@@ -16,6 +17,7 @@ export default function Home() {
       <Header />
       <main>
         <LogoIntro />
+        <WorkLayers />
         <LogoStrip />
         <Services />
         <Work />

@@ -82,6 +82,8 @@ export function LogoIntro() {
   const soundEnabledRef = useRef(true);
   const animStartedRef = useRef(false);
   const [soundOn, setSoundOn] = useState(false);
+  const [inView, setInView] = useState(true);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const playBirdSequence = useCallback(async () => {
     if (!soundEnabledRef.current) return false;
@@ -475,11 +477,21 @@ export function LogoIntro() {
     window.addEventListener("resize", onResize);
     window.addEventListener("pointerdown", onFirstInteraction, { once: true });
 
+    const section = sectionRef.current;
+    const io = section
+      ? new IntersectionObserver(
+          ([entry]) => setInView(entry.isIntersecting),
+          { threshold: 0.15 },
+        )
+      : null;
+    if (section && io) io.observe(section);
+
     return () => {
       cancelAnimationFrame(rafRef.current);
       cancelAnimationFrame(syncRaf);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("pointerdown", onFirstInteraction);
+      io?.disconnect();
       birdRef.current?.stop();
       birdRef.current = null;
     };
@@ -491,6 +503,7 @@ export function LogoIntro() {
 
   return (
     <section
+      ref={sectionRef}
       id="top"
       className="relative h-[100svh] w-full overflow-hidden bg-[#030508]"
       aria-label="a2sea intro"
@@ -536,7 +549,11 @@ export function LogoIntro() {
         </div>
       </div>
 
-      <div className="fixed bottom-[18px] right-[18px] z-[100] flex items-center gap-2">
+      <div
+        className={`fixed bottom-[18px] right-[18px] z-[100] flex items-center gap-2 transition-opacity duration-300 ${
+          inView ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      >
         <button
           type="button"
           onClick={() => void toggleSound()}
