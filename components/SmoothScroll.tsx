@@ -25,11 +25,13 @@ export function SmoothScroll() {
 
     // Anchor links → smooth scroll via Lenis
     function onClick(e: MouseEvent) {
-      const target = (e.target as HTMLElement).closest('a[href^="#"]');
+      const target = (e.target as HTMLElement).closest("a[href*='#']");
       if (!target) return;
       const href = target.getAttribute("href");
-      if (!href || href === "#") return;
-      const el = document.querySelector(href);
+      if (!href) return;
+      const hash = href.includes("#") ? `#${href.split("#")[1]}` : "";
+      if (!hash || hash === "#") return;
+      const el = document.querySelector(hash);
       if (el) {
         e.preventDefault();
         lenis.scrollTo(el as HTMLElement, { offset: -80 });

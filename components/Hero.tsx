@@ -1,75 +1,118 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { ParticleField } from "@/components/motion/ParticleField";
 import { TextReveal } from "@/components/motion/TextReveal";
 import { MagneticButton } from "@/components/motion/MagneticButton";
 import { siteConfig } from "@/data/siteConfig";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+const VIDEO_SRC = "/hero/hero.mp4";
+const POSTER_SRC = "/hero/hero-preview.jpg";
 
 export function Hero() {
   const reduced = useReducedMotion() ?? false;
-  const { contact, location } = siteConfig;
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [paused, setPaused] = useState(false);
+  const { contact, location, hero } = siteConfig;
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || reduced) return;
+    video.muted = true;
+    const play = video.play();
+    if (play) play.catch(() => setPaused(true));
+  }, [reduced]);
+
+  function togglePlayback() {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      video.play().then(() => setPaused(false)).catch(() => {});
+    } else {
+      video.pause();
+      setPaused(true);
+    }
+  }
 
   return (
     <section
       id="top"
-      className="relative flex min-h-[100svh] items-center overflow-hidden bg-[var(--paper)] px-5 pb-20 pt-32 md:px-8 md:pt-36"
+      className="relative flex min-h-[100svh] items-end overflow-hidden bg-white"
       aria-labelledby="hero-heading"
     >
-      {/* Interactive particle sphere */}
-      <ParticleField className="absolute inset-0 h-full w-full opacity-90" />
+      <div className="absolute inset-0" aria-hidden>
+        {reduced ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={POSTER_SRC}
+            alt=""
+            className="h-full w-full object-cover object-center"
+          />
+        ) : (
+          <video
+            ref={videoRef}
+            className="h-full w-full object-cover object-center"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster={POSTER_SRC}
+          >
+            <source src={VIDEO_SRC} type="video/mp4" />
+          </video>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-white via-white/55 to-white/10" />
+      </div>
 
-      {/* Soft accent wash */}
-      <div className="blob left-[8%] top-[18%] h-[320px] w-[320px] bg-[var(--accent-wash)]" aria-hidden />
-      <div className="blob right-[6%] bottom-[12%] h-[260px] w-[260px] bg-[#f3ece1]" aria-hidden />
-
-      <div className="relative z-10 mx-auto w-full max-w-6xl">
-        {/* Eyebrow */}
-        <motion.div
-          className="mb-8 flex items-center gap-3"
-          initial={reduced ? false : { opacity: 0, y: 12 }}
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-16 pt-32 md:px-8 md:pb-24 md:pt-40">
+        <motion.p
+          className="eyebrow"
+          initial={reduced ? false : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: EASE }}
+          transition={{ duration: 0.5, ease: EASE }}
         >
-          <span className="inline-flex h-2 w-2 rounded-full bg-[var(--accent)]" />
-          <span className="eyebrow">Web studio · {location.city}</span>
-        </motion.div>
+          {hero.eyebrow} · {location.city}
+        </motion.p>
 
-        {/* Headline — masked line reveal */}
-        <h1 id="hero-heading" className="display max-w-4xl text-[clamp(2.8rem,8vw,6.2rem)] text-[var(--ink)]">
+        <h1
+          id="hero-heading"
+          className="display mt-6 max-w-5xl text-[clamp(2.6rem,8vw,6rem)] text-[var(--ink)]"
+        >
           <TextReveal
-            lines={["Websites that bring", <em key="2" className="italic text-[var(--accent)]">customers</em>, "to your door."]}
+            lines={[
+              "Websites that bring",
+              <span key="2">
+                customers to your{" "}
+                <em className="font-medium not-italic text-[var(--accent)]">door.</em>
+              </span>,
+            ]}
             stagger={0.1}
-            delay={0.15}
+            delay={0.12}
           />
         </h1>
 
-        {/* Sub */}
         <motion.p
-          className="mt-8 max-w-xl text-lg leading-relaxed text-[var(--muted)]"
-          initial={reduced ? false : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.55, ease: EASE }}
-        >
-          We design and build premium websites, booking systems, and Google presence for hotels,
-          cafés, ecommerce, and local businesses — fully custom, shipped in weeks.
-        </motion.p>
-
-        {/* CTAs */}
-        <motion.div
-          className="mt-10 flex flex-wrap items-center gap-4"
+          className="mt-8 max-w-xl text-base leading-relaxed text-[var(--muted)] md:text-lg"
           initial={reduced ? false : { opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.68, ease: EASE }}
+          transition={{ duration: 0.6, delay: 0.45, ease: EASE }}
+        >
+          {hero.sub}
+        </motion.p>
+
+        <motion.div
+          className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
+          initial={reduced ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.55, ease: EASE }}
         >
           <MagneticButton
             href={contact.whatsappHref}
             external
-            strength={0.5}
-            className="inline-flex items-center gap-2 rounded-full bg-[var(--ink)] px-7 py-3.5 text-sm font-medium text-[var(--paper)] shadow-[var(--shadow-md)] transition-colors duration-200 hover:bg-[var(--accent)]"
+            className="inline-flex min-h-12 items-center justify-center gap-2 bg-[var(--ink)] px-7 py-3.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-[var(--accent)]"
           >
             Start a project
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -77,32 +120,26 @@ export function Hero() {
             </svg>
           </MagneticButton>
           <Link
-            href="#work"
-            className="group inline-flex items-center gap-2 text-sm font-medium text-[var(--ink)]"
+            href="/#work"
+            className="group inline-flex min-h-12 items-center text-sm font-medium text-[var(--ink)]"
           >
-            <span className="border-b border-[var(--ink)]/30 pb-0.5 transition-colors group-hover:border-[var(--accent)] group-hover:text-[var(--accent)]">
+            <span className="border-b border-[var(--ink)]/25 pb-0.5 transition-colors group-hover:border-[var(--accent)] group-hover:text-[var(--accent)]">
               View our work
             </span>
           </Link>
         </motion.div>
       </div>
 
-      {/* Scroll cue */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 md:block"
-        initial={reduced ? false : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1 }}
-      >
-        <div className="flex flex-col items-center gap-2 text-[var(--muted-2)]">
-          <span className="text-[0.65rem] uppercase tracking-[0.2em]">Scroll</span>
-          <motion.span
-            className="block h-8 w-px bg-[var(--line-strong)]"
-            animate={reduced ? undefined : { scaleY: [0.3, 1, 0.3], originY: 0 }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </div>
-      </motion.div>
+      {!reduced && (
+        <button
+          type="button"
+          onClick={togglePlayback}
+          className="absolute bottom-6 right-5 z-10 min-h-11 rounded-full border border-[var(--line)] bg-white/80 px-4 text-[0.65rem] font-medium uppercase tracking-[0.16em] text-[var(--muted)] backdrop-blur-sm transition-colors hover:text-[var(--ink)] md:bottom-8 md:right-8"
+          aria-pressed={!paused}
+        >
+          {paused ? "Play" : "Pause"}
+        </button>
+      )}
     </section>
   );
 }

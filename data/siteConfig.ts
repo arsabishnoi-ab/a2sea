@@ -25,8 +25,8 @@ export const siteConfig = {
 
   ogImagePath: "/brand/a2sea-lockup.png",
 
-  /** Full-bleed hero photography */
-  heroBackgroundPath: "/hero/hero-cinematic.png",
+  /** Full-bleed hero video */
+  heroBackgroundPath: "/hero/hero.mp4",
 
   location: {
     city: "Bangalore",

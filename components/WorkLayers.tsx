@@ -7,25 +7,39 @@ import "./WorkLayers.css";
 
 const EASE = "sine.inOut";
 const NUMBER_SIZE = 50;
+const STAGE_W = 1440;
+const STAGE_H = 900;
+const CARD_W = 200;
+const CARD_H = 300;
+const CARD_GAP = 40;
+const OFFSET_TOP = STAGE_H - 430;
+const OFFSET_LEFT = STAGE_W - 830;
+const PROGRESS_W = 500;
 
 export function WorkLayers() {
   const rootRef = useRef<HTMLElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const node = rootRef.current;
-    if (!node) return;
+    const frameNode = frameRef.current;
+    const stageNode = stageRef.current;
+    if (!node || !frameNode || !stageNode) return;
     const root: HTMLElement = node;
+    const frame: HTMLElement = frameNode;
+    const stage: HTMLElement = stageNode;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const n = workLayers.length;
     const order = workLayers.map((_, i) => i);
     let detailsEven = true;
-    let offsetTop = 200;
-    let offsetLeft = 700;
-    let cardWidth = 200;
-    let cardHeight = 300;
-    let gap = 40;
-    let progressWidth = 500;
+    const offsetTop = OFFSET_TOP;
+    const offsetLeft = OFFSET_LEFT;
+    const cardWidth = CARD_W;
+    const cardHeight = CARD_H;
+    const gap = CARD_GAP;
+    const progressWidth = PROGRESS_W;
     let clicks = 0;
     let stepping = false;
     let cancelled = false;
@@ -40,16 +54,14 @@ export function WorkLayers() {
 
     const detailsSel = (even: boolean) => (even ? "[data-details='even']" : "[data-details='odd']");
 
+    function fitStage() {
+      const s = frame.clientWidth / STAGE_W;
+      if (!s || !Number.isFinite(s)) return;
+      stage.style.transform = `scale(${s})`;
+    }
+
     function layoutMetrics() {
-      const height = root.clientHeight;
-      const width = root.clientWidth;
-      const mobile = width < 768;
-      cardWidth = mobile ? 110 : 200;
-      cardHeight = mobile ? 160 : 300;
-      gap = mobile ? 16 : 40;
-      offsetTop = height - (mobile ? 270 : 430);
-      offsetLeft = mobile ? 16 : Math.max(24, width - 830);
-      progressWidth = Math.min(500, (q(".wl-progress-bg")?.clientWidth ?? 500) || 500);
+      fitStage();
     }
 
     function fillDetails(even: boolean, index: number) {
@@ -80,7 +92,8 @@ export function WorkLayers() {
       const [active, ...rest] = order;
       const activeDetails = detailsSel(detailsEven);
       const inactiveDetails = detailsSel(!detailsEven);
-      const { clientWidth: width, clientHeight: height } = root;
+      const width = STAGE_W;
+      const height = STAGE_H;
 
       fillDetails(detailsEven, active);
 
@@ -214,8 +227,8 @@ export function WorkLayers() {
           x: 0,
           y: 0,
           ease: EASE,
-          width: root.clientWidth,
-          height: root.clientHeight,
+          width: STAGE_W,
+          height: STAGE_H,
           borderRadius: 0,
           onComplete: () => {
             const xNew = restX(rest.length - 1);
@@ -292,7 +305,7 @@ export function WorkLayers() {
           await new Promise((r) => setTimeout(r, 180));
           continue;
         }
-        const width = root.clientWidth;
+        const width = STAGE_W;
         const indicator = q(".wl-indicator");
         gsap.set(indicator, { x: -width });
         await animate(indicator, 2.2, { x: 0, ease: EASE });
@@ -311,8 +324,8 @@ export function WorkLayers() {
       gsap.set(card(active), {
         x: 0,
         y: 0,
-        width: root.clientWidth,
-        height: root.clientHeight,
+        width: STAGE_W,
+        height: STAGE_H,
         borderRadius: 0,
         zIndex: 20,
       });
@@ -358,14 +371,14 @@ export function WorkLayers() {
     gsap.set(card(order[0]), {
       x: 0,
       y: 0,
-      width: root.clientWidth,
-      height: root.clientHeight,
+      width: STAGE_W,
+      height: STAGE_H,
       borderRadius: 0,
       zIndex: 20,
     });
     order.slice(1).forEach((i) => {
       gsap.set(card(i), {
-        x: root.clientWidth + 240,
+        x: STAGE_W + 240,
         y: offsetTop,
         width: cardWidth,
         height: cardHeight,
@@ -394,16 +407,11 @@ export function WorkLayers() {
     const onResize = () => {
       window.clearTimeout(resizeTimer);
       resizeTimer = window.setTimeout(() => {
-        if (!inited || stepping) return;
-        layoutMetrics();
-        applyStaticLayout();
-        gsap.set(cardContent(order[0]), { opacity: 0 });
-        gsap.set(q(".wl-progress-fg"), {
-          width: progressWidth * (1 / n) * (order[0] + 1),
-        });
-      }, 120);
+        fitStage();
+      }, 80);
     };
     window.addEventListener("resize", onResize);
+    window.addEventListener("orientationchange", onResize);
 
     const io = new IntersectionObserver(
       ([entry]) => {
@@ -418,6 +426,7 @@ export function WorkLayers() {
       cancelled = true;
       io.disconnect();
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("orientationchange", onResize);
       window.clearTimeout(resizeTimer);
       nextBtn?.removeEventListener("click", queueStep);
       prevBtn?.removeEventListener("click", queueStep);
@@ -435,6 +444,9 @@ export function WorkLayers() {
       className="work-layers"
       aria-label="Work layers"
     >
+      <div className="wl-rotator">
+      <div className="wl-frame" ref={frameRef}>
+      <div className="wl-stage" ref={stageRef}>
       <p className="wl-hint">Scroll or wait — layers advance</p>
       <div className="wl-indicator" aria-hidden />
 
@@ -484,6 +496,9 @@ export function WorkLayers() {
             </div>
           ))}
         </div>
+      </div>
+      </div>
+      </div>
       </div>
     </section>
   );

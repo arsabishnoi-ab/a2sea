@@ -16,7 +16,7 @@ export default function TermsPage() {
   return (
     <>
       <Header />
-      <main className="bg-[var(--paper)] px-5 pb-24 pt-32 md:px-8 md:pt-36">
+      <main id="main" className="bg-white px-5 pb-24 pt-32 md:px-8 md:pt-36">
         <div className="mx-auto max-w-3xl">
           <p className="eyebrow">Legal</p>
           <h1 className="display mt-6 text-[clamp(2.4rem,6vw,4rem)] text-[var(--ink)]">
@@ -32,7 +32,7 @@ export default function TermsPage() {
               <section key={section.title} aria-labelledby={section.title.replace(/\s+/g, "-").toLowerCase()}>
                 <h2
                   id={section.title.replace(/\s+/g, "-").toLowerCase()}
-                  className="font-serif text-2xl text-[var(--ink)]"
+                  className="text-xl font-semibold tracking-[-0.03em] text-[var(--ink)]"
                 >
                   {section.title}
                 </h2>
@@ -47,10 +47,8 @@ export default function TermsPage() {
             ))}
           </div>
 
-          <div className="mt-16 rounded-xl border border-[var(--line)] bg-white p-6 shadow-[var(--shadow-sm)]">
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--accent-gold)]">
-              Questions
-            </p>
+          <div className="mt-16 border-t border-[var(--line)] pt-8">
+            <p className="text-xs uppercase tracking-[0.14em] text-[var(--muted-2)]">Questions</p>
             <p className="mt-3 text-base leading-relaxed text-[var(--muted)]">
               Contact us at{" "}
               <a href={siteConfig.contact.emailHref} className="text-[var(--ink)] underline-offset-4 hover:underline">
@@ -69,7 +67,7 @@ export default function TermsPage() {
             </p>
             <Link
               href="/"
-              className="mt-6 inline-flex text-sm font-medium text-[var(--accent-deep)] transition-colors hover:text-[var(--accent)]"
+              className="mt-6 inline-flex text-sm font-medium text-[var(--accent)] transition-colors hover:text-[var(--accent-deep)]"
             >
               ← Back to home
             </Link>
