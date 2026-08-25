@@ -55,7 +55,7 @@ function getLogoDimensions(probeWidth: number, naturalW: number, naturalH: numbe
   const lw =
     probeWidth > 0
       ? probeWidth
-      : Math.min(LOGO_MAX_PX, (1440 * LOGO_VW) / 100);
+      : Math.min(LOGO_MAX_PX, (window.innerWidth * LOGO_VW) / 100);
   const lh = lw * aspect;
   return { lw, lh };
 }
@@ -108,10 +108,9 @@ export function LogoIntro() {
 
   const resizeBg = useCallback(() => {
     const cv = bgRef.current;
-    const section = sectionRef.current;
     if (!cv) return;
-    cv.width = section?.clientWidth || 1440;
-    cv.height = section?.clientHeight || 900;
+    cv.width = window.innerWidth;
+    cv.height = window.innerHeight;
     ptsRef.current = Array.from({ length: 150 }, () => ({
       x: Math.random() * cv.width,
       y: Math.random() * cv.height,
@@ -506,7 +505,7 @@ export function LogoIntro() {
     <section
       ref={sectionRef}
       id="top"
-      className="relative h-[900px] w-full overflow-hidden bg-[#030508]"
+      className="relative h-[100svh] w-full overflow-hidden bg-[#030508]"
       aria-label="a2sea intro"
     >
       <canvas ref={bgRef} className="absolute inset-0 h-full w-full" aria-hidden />
@@ -514,21 +513,17 @@ export function LogoIntro() {
       <div className="absolute inset-0 grid place-items-center px-4">
         <div
           ref={widthProbeRef}
-          className="pointer-events-none invisible absolute h-0 w-[min(680px,76%)]"
+          className="pointer-events-none invisible absolute h-0 w-[min(680px,76vw)]"
           aria-hidden
         />
-        <div
-          ref={logoWrapRef}
-          className="relative mx-auto w-[min(680px,76%)] shrink-0 overflow-visible"
-          style={{ aspectRatio: "765 / 241" }}
-        >
+        <div ref={logoWrapRef} className="relative mx-auto shrink-0 overflow-visible">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             ref={logoImgRef}
             id="logo-full"
             src={LOGO_SRC}
             alt="a2sea"
-            className="invisible block h-auto w-full max-w-[min(680px,76%)]"
+            className="invisible block h-auto w-full max-w-[min(680px,76vw)]"
             onLoad={boot}
           />
 

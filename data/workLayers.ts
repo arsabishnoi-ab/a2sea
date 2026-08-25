@@ -32,10 +32,9 @@ export const workLayers: WorkLayer[] = [
     title2: "STORES",
     description:
       "Showroom sites with catalogues, enquiry flows, and a retail presence that feels like the floor — not a template shop.",
-    image:
-      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1920&q=80",
-    href: "#contact",
-    cta: "Start a store",
+    image: "/work/mahaveer-marketing.jpg",
+    href: "#furniture",
+    cta: "See stores",
   },
   {
     id: "hotels",

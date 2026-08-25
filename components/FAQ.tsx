@@ -32,38 +32,34 @@ export function FAQ() {
   const reduced = useReducedMotion() ?? false;
 
   return (
-    <section
-      className="border-t border-[var(--line)] bg-white px-5 py-24 md:px-8 md:py-32"
-      aria-labelledby="faq-heading"
-    >
-      <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-[0.85fr_1.15fr] md:gap-20">
+    <section className="border-t border-[var(--line)] bg-[var(--paper)] px-5 py-24 md:px-8 md:py-32" aria-labelledby="faq-heading">
+      <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-[0.8fr_1.2fr] md:gap-20">
         <Reveal>
           <p className="eyebrow">FAQ</p>
           <h2 id="faq-heading" className="display mt-4 text-[clamp(2.2rem,5vw,3.4rem)] text-[var(--ink)]">
-            Before we build.
+            Before we<br />build.
           </h2>
         </Reveal>
 
-        <Reveal delay={0.08} y={16}>
+        <Reveal delay={0.1} y={20}>
           <div className="border-t border-[var(--line)]">
             {faqs.map((item, i) => (
               <div key={item.q} className="border-b border-[var(--line)]">
                 <button
                   type="button"
-                  className="flex min-h-12 w-full items-center justify-between gap-6 py-6 text-left"
+                  className="flex w-full items-center justify-between gap-6 py-6 text-left"
                   onClick={() => setOpen((v) => (v === i ? -1 : i))}
                   aria-expanded={open === i}
                 >
-                  <span className="text-base font-medium tracking-[-0.02em] text-[var(--ink)] md:text-lg">
-                    {item.q}
-                  </span>
+                  <span className="text-lg font-medium text-[var(--ink)]">{item.q}</span>
                   <motion.span
-                    className="flex h-8 w-8 shrink-0 items-center justify-center text-[var(--muted-2)]"
+                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[var(--line-strong)] text-[var(--accent)]"
                     animate={{ rotate: open === i ? 45 : 0 }}
                     transition={{ duration: 0.25 }}
-                    aria-hidden
                   >
-                    +
+                    <svg width="13" height="13" viewBox="0 0 12 12" fill="none" aria-hidden>
+                      <path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                    </svg>
                   </motion.span>
                 </button>
                 <AnimatePresence initial={false}>
@@ -75,9 +71,7 @@ export function FAQ() {
                       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                       className="overflow-hidden"
                     >
-                      <p className="pb-6 pr-8 text-sm leading-relaxed text-[var(--muted)] md:text-base">
-                        {item.a}
-                      </p>
+                      <p className="pb-6 pr-10 text-base leading-relaxed text-[var(--muted)]">{item.a}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>

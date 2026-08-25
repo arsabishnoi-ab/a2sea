@@ -25,8 +25,8 @@ export const siteConfig = {
 
   ogImagePath: "/brand/a2sea-lockup.png",
 
-  /** Full-bleed hero video */
-  heroBackgroundPath: "/hero/hero.mp4",
+  /** Full-bleed hero photography */
+  heroBackgroundPath: "/hero/hero-cinematic.png",
 
   location: {
     city: "Bangalore",
@@ -105,8 +105,8 @@ export const siteConfig = {
   },
 
   stats: [
-    { value: "11+", label: "Live builds" },
-    { value: "4", label: "Sectors" },
+    { value: "17+", label: "Live builds" },
+    { value: "6", label: "Sectors" },
     { value: "100%", label: "Custom" },
   ] as const,
 

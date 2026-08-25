@@ -46,7 +46,7 @@ export function TextReveal({
             className="block will-change-transform"
             initial={{ y: "110%" }}
             {...animateProps}
-            transition={{ duration: 0.65, delay: delay + i * stagger, ease: EASE }}
+            transition={{ duration: 0.9, delay: delay + i * stagger, ease: EASE }}
           >
             {line}
           </motion.span>

@@ -77,6 +77,39 @@ export const workSections: WorkSection[] = [
         tags: ["Law firm", "Criminal defence", "Consult"],
         image: "/work/karthik-m-law-associates.jpg",
       },
+      {
+        slug: "advocate-selva-kumar",
+        name: "Chambers of Advocate Selva Kumar",
+        sector: "Legal",
+        location: "BTM Layout, Bengaluru",
+        blurb:
+          "Advocate Selva Kumar. T (BBA LLB) — property, family, civil, criminal and documentation matters with Supreme Law Associates, BTM 1st Stage.",
+        url: "https://advocatesk23.in/",
+        tags: ["Advocate", "Property", "Consultation"],
+        image: "/work/advocate-selva-kumar.jpg",
+      },
+      {
+        slug: "advocate-jayashree-sridhar",
+        name: "Chambers of Advocate Jayashree Sridhar",
+        sector: "Legal",
+        location: "Bengaluru",
+        blurb:
+          "39+ years at the Karnataka bar — civil litigation, property due diligence, family law, land acquisition, consumer matters, and wills.",
+        url: "https://advocatejayashreesridhar.in/",
+        tags: ["Advocate", "Civil", "Consultation"],
+        image: "/work/advocate-jayashree-sridhar.jpg",
+      },
+      {
+        slug: "vakil-chavadi",
+        name: "Vakil Chavadi",
+        sector: "Law chambers",
+        location: "Hebbal, Bengaluru",
+        blurb:
+          "Advocate K. N. Praveen Kumar — 34 years at New Law Chambers, Hebbal. Civil, criminal, constitutional, family, arbitration, and High Court practice.",
+        url: "https://vakilchavadi.in/",
+        tags: ["Chambers", "Advocate", "Consultation"],
+        image: "/work/vakil-chavadi.jpg",
+      },
     ],
   },
   {
@@ -155,6 +188,53 @@ export const workSections: WorkSection[] = [
         url: "https://jjt-seven.vercel.app/",
         tags: ["Transport", "Services", "Enquiries"],
         image: "/work/jjt-transport.jpg",
+      },
+    ],
+  },
+  {
+    id: "furniture",
+    title: "Furniture stores",
+    description: "Showroom sites with catalogues, enquiry flows, and a retail presence that feels like the floor.",
+    projects: [
+      {
+        slug: "mahaveer-marketing",
+        name: "Mahaveer Marketing",
+        sector: "Furniture retail",
+        location: "Jayanagar, Bengaluru",
+        blurb:
+          "32-year shop on 4th Cross — chairs, cupboards, tables, beds, ladders, stands and mops. Own manufacturer, free delivery.",
+        url: "https://mahaveer-marketing-teal.vercel.app/",
+        tags: ["Showroom", "Catalogue", "Enquire"],
+        image: "/work/mahaveer-marketing.jpg",
+      },
+      {
+        slug: "royal-furniture",
+        name: "Royal Furniture",
+        sector: "Furniture & interiors",
+        location: "Kengeri, Bengaluru",
+        blurb:
+          "Handmade in India since 1974 — sofas, recliners, theatre seating, carpets, curtains and floors from the Kengeri showroom.",
+        url: "https://royal-furnitures-pi.vercel.app/",
+        tags: ["Collections", "Showroom", "Craft"],
+        image: "/work/royal-furniture.jpg",
+      },
+    ],
+  },
+  {
+    id: "business",
+    title: "Business groups",
+    description: "Group and holding-company sites that present ventures, locations, and a single point of contact.",
+    projects: [
+      {
+        slug: "bishnoi-group",
+        name: "Bishnoi Group",
+        sector: "Business group",
+        location: "Hubballi · Goa · Bengaluru",
+        blurb:
+          "Holding company for distribution, hospitality and real estate — Bishnoi ventures across Hubballi, Goa, Bengaluru and Sanchore.",
+        url: "https://bishnoigroup.com/",
+        tags: ["Group", "Ventures", "Hospitality"],
+        image: "/work/bishnoi-group.jpg",
       },
     ],
   },

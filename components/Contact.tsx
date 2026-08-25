@@ -1,16 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Reveal } from "@/components/motion/Reveal";
+import { TextReveal } from "@/components/motion/TextReveal";
 import { siteConfig } from "@/data/siteConfig";
 
 const WA_BASE = siteConfig.contact.whatsappHref.split("?")[0];
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 const INPUT =
-  "w-full border-0 border-b border-[var(--line)] bg-transparent px-0 py-3 text-sm text-[var(--ink)] placeholder:text-[var(--muted-2)] outline-none transition-colors duration-200 focus:border-[var(--ink)]";
+  "w-full rounded-xl border border-[var(--line)] bg-[var(--paper)] px-4 py-3 text-sm text-[var(--ink)] placeholder:text-[var(--muted-2)] outline-none transition-all duration-200 focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/15";
 
 export function Contact() {
   const [form, setForm] = useState({ name: "", business: "", message: "" });
+  const reduced = useReducedMotion() ?? false;
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -19,124 +23,112 @@ export function Contact() {
   }
 
   return (
-    <section
-      id="contact"
-      className="scroll-mt-24 border-t border-[var(--line)] bg-white px-5 py-24 md:px-8 md:py-32"
-      aria-labelledby="contact-heading"
-    >
-      <div className="mx-auto grid max-w-6xl gap-16 lg:grid-cols-2 lg:gap-24">
-        <div>
-          <Reveal>
-            <p className="eyebrow">Contact</p>
-            <h2
-              id="contact-heading"
-              className="display mt-4 text-[clamp(2.4rem,5vw,3.8rem)] text-[var(--ink)]"
-            >
-              Let&apos;s talk.
-            </h2>
-          </Reveal>
-          <Reveal delay={0.08} y={14}>
-            <p className="mt-6 max-w-md text-base leading-relaxed text-[var(--muted)]">
-              Fill in the form and we&apos;ll open a WhatsApp chat — or talk to{" "}
-              {siteConfig.founder.name} directly.
-            </p>
-          </Reveal>
+    <section id="contact" className="bg-[var(--paper)] px-5 py-24 md:px-8 md:py-32" aria-labelledby="contact-heading">
+      <div className="mx-auto max-w-6xl">
+        <div className="grid gap-14 lg:grid-cols-[1fr_0.9fr] lg:gap-20">
 
-          <Reveal delay={0.12} y={12}>
-            <dl className="mt-12 space-y-5 text-sm">
-              <div className="flex justify-between gap-6 border-b border-[var(--line)] pb-4">
-                <dt className="text-[var(--muted-2)]">WhatsApp</dt>
-                <dd>
+          {/* Left — closing statement */}
+          <div>
+            <Reveal>
+              <p className="eyebrow">Contact</p>
+            </Reveal>
+            <h2 id="contact-heading" className="display mt-6 text-[clamp(2.6rem,7vw,5rem)] text-[var(--ink)]">
+              <TextReveal
+                onView
+                stagger={0.08}
+                lines={["Let's build", <span key="2">something <em className="italic text-[var(--accent)]">good.</em></span>]}
+              />
+            </h2>
+            <Reveal delay={0.15} y={18}>
+              <p className="mt-8 max-w-md text-base leading-relaxed text-[var(--muted)]">
+                Fill in the form and we&apos;ll open a WhatsApp chat right away — or talk to Arvind directly below.
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.2} y={16}>
+              <div className="mt-10 rounded-xl border border-[var(--line)] bg-white p-6 shadow-[var(--shadow-sm)]">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent-gold)]">
+                  Talk to founder
+                </p>
+                <p className="mt-3 font-serif text-2xl text-[var(--ink)]">{siteConfig.founder.name}</p>
+                <p className="mt-1 text-sm text-[var(--muted)]">{siteConfig.founder.title}, {siteConfig.brandName}</p>
+
+                <div className="mt-6 flex flex-col gap-3 border-t border-[var(--line)] pt-6">
                   <a
                     href={siteConfig.contact.whatsappHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[var(--ink)] transition-colors hover:text-[var(--accent)]"
+                    className="group flex items-center gap-4 text-[var(--ink)]"
                   >
-                    {siteConfig.contact.phoneDisplay}
+                    <span className="text-xs uppercase tracking-[0.16em] text-[var(--muted-2)]">WhatsApp</span>
+                    <span className="ml-auto font-medium transition-colors group-hover:text-[var(--accent)]">
+                      {siteConfig.contact.phoneDisplay}
+                    </span>
                   </a>
-                </dd>
-              </div>
-              <div className="flex justify-between gap-6 border-b border-[var(--line)] pb-4">
-                <dt className="text-[var(--muted-2)]">Phone</dt>
-                <dd>
-                  <a
-                    href={siteConfig.contact.phoneHref}
-                    className="text-[var(--ink)] transition-colors hover:text-[var(--accent)]"
-                  >
-                    {siteConfig.contact.phoneDisplay}
+                  <a href={siteConfig.contact.phoneHref} className="group flex items-center gap-4 text-[var(--ink)]">
+                    <span className="text-xs uppercase tracking-[0.16em] text-[var(--muted-2)]">Phone</span>
+                    <span className="ml-auto font-medium transition-colors group-hover:text-[var(--accent)]">
+                      {siteConfig.contact.phoneDisplay}
+                    </span>
                   </a>
-                </dd>
-              </div>
-              <div className="flex justify-between gap-6 border-b border-[var(--line)] pb-4">
-                <dt className="text-[var(--muted-2)]">Email</dt>
-                <dd>
-                  <a
-                    href={siteConfig.contact.emailHref}
-                    className="text-[var(--ink)] transition-colors hover:text-[var(--accent)]"
-                  >
-                    {siteConfig.contact.email}
+                  <a href={siteConfig.contact.emailHref} className="group flex items-center gap-4 text-[var(--ink)]">
+                    <span className="text-xs uppercase tracking-[0.16em] text-[var(--muted-2)]">Email</span>
+                    <span className="ml-auto font-medium transition-colors group-hover:text-[var(--accent)]">
+                      {siteConfig.contact.email}
+                    </span>
                   </a>
-                </dd>
+                  <div className="flex items-center gap-4 text-[var(--ink)]">
+                    <span className="text-xs uppercase tracking-[0.16em] text-[var(--muted-2)]">Location</span>
+                    <span className="ml-auto font-medium">
+                      {siteConfig.location.city}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div className="flex justify-between gap-6">
-                <dt className="text-[var(--muted-2)]">Studio</dt>
-                <dd className="text-[var(--ink)]">{siteConfig.location.city}</dd>
-              </div>
-            </dl>
-            <p className="mt-8 text-xs text-[var(--muted-2)]">
-              {siteConfig.founder.name}, {siteConfig.founder.title}
-            </p>
-          </Reveal>
-        </div>
+            </Reveal>
+          </div>
 
-        <Reveal delay={0.1} y={16}>
-          <form onSubmit={onSubmit} className="flex flex-col gap-6">
-            <div>
-              <label className="mb-1 block text-xs uppercase tracking-[0.12em] text-[var(--muted-2)]">
-                Your name
-              </label>
-              <input
-                required
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                placeholder="e.g. Arjun Sharma"
-                className={INPUT}
-              />
-            </div>
-            <div>
-              <label className="mb-1 block text-xs uppercase tracking-[0.12em] text-[var(--muted-2)]">
-                Business name <span className="normal-case tracking-normal">(optional)</span>
-              </label>
-              <input
-                value={form.business}
-                onChange={(e) => setForm({ ...form, business: e.target.value })}
-                placeholder="Your hotel, café, or shop"
-                className={INPUT}
-              />
-            </div>
-            <div>
-              <label className="mb-1 block text-xs uppercase tracking-[0.12em] text-[var(--muted-2)]">
-                What do you need?
-              </label>
-              <textarea
-                required
-                rows={4}
-                value={form.message}
-                onChange={(e) => setForm({ ...form, message: e.target.value })}
-                placeholder="Website, Google Maps, booking flow, custom software..."
-                className={`${INPUT} resize-none`}
-              />
-            </div>
-            <button
-              type="submit"
-              className="mt-2 inline-flex min-h-12 w-full items-center justify-center bg-[var(--ink)] px-6 py-4 text-sm font-medium text-white transition-colors hover:bg-[var(--accent)] md:w-auto"
-            >
-              Send via WhatsApp
-            </button>
-            <p className="text-xs text-[var(--muted-2)]">We typically respond within a few hours.</p>
-          </form>
-        </Reveal>
+          {/* Right — form */}
+          <motion.div
+            initial={reduced ? false : { opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: EASE }}
+          >
+            <form onSubmit={onSubmit} className="rounded-3xl border border-[var(--line)] bg-white p-6 shadow-[var(--shadow-sm)] md:p-8">
+              <div className="grid gap-5">
+                <div>
+                  <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">Your name</label>
+                  <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="e.g. Arjun Sharma" className={INPUT} />
+                </div>
+                <div>
+                  <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">
+                    Business name <span className="font-normal text-[var(--muted-2)]">(optional)</span>
+                  </label>
+                  <input value={form.business} onChange={(e) => setForm({ ...form, business: e.target.value })} placeholder="Your hotel, café, or shop" className={INPUT} />
+                </div>
+                <div>
+                  <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">What do you need?</label>
+                  <textarea required rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    placeholder="Website, Google Maps, booking flow, custom software..." className={`${INPUT} resize-none`} />
+                </div>
+                <button
+                  type="submit"
+                  className="btn-classic mt-1 flex items-center justify-center gap-2 bg-[var(--ink)] px-6 py-4 text-[0.72rem] font-medium uppercase tracking-[0.1em] text-[var(--paper)] transition-colors duration-200 hover:bg-[var(--accent-deep)] active:scale-[0.99]"
+                >
+                  Send via WhatsApp
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </button>
+                <p className="text-center text-xs text-[var(--muted-2)]">
+                  We typically respond within a few hours.
+                </p>
+              </div>
+            </form>
+          </motion.div>
+
+        </div>
       </div>
     </section>
   );

@@ -4,8 +4,8 @@ import { Reveal } from "@/components/motion/Reveal";
 import { CountUp } from "@/components/motion/CountUp";
 
 const stats = [
-  { prefix: "", to: 5, suffix: "+", label: "Live projects", sub: "Real businesses online" },
-  { prefix: "", to: 4, suffix: "", label: "Sectors served", sub: "Hotels · Cafés · Ecom · Tech" },
+  { prefix: "", to: 17, suffix: "+", label: "Live projects", sub: "Real businesses online" },
+  { prefix: "", to: 6, suffix: "", label: "Sectors served", sub: "Law · Hotels · Furniture · Groups" },
   { prefix: "", to: 100, suffix: "%", label: "Custom built", sub: "No templates, ever" },
   { prefix: "<", to: 4, suffix: " wks", label: "Avg. delivery", sub: "From brief to live" },
 ] as const;

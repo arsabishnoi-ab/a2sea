@@ -2,43 +2,53 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { MagneticButton } from "@/components/motion/MagneticButton";
 import { siteConfig } from "@/data/siteConfig";
 
 const NAV = siteConfig.nav.filter((n) => n.href !== "#contact");
-const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [overDark, setOverDark] = useState(true);
   const [open, setOpen] = useState(false);
-  const reduced = useReducedMotion() ?? false;
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 12);
+    const fn = () => {
+      setScrolled(window.scrollY > 24);
+      const layers = document.getElementById("work-layers");
+      if (!layers) {
+        setOverDark(window.scrollY < window.innerHeight * 0.85);
+        return;
+      }
+      setOverDark(layers.getBoundingClientRect().bottom > 80);
+    };
     fn();
     window.addEventListener("scroll", fn, { passive: true });
-    return () => window.removeEventListener("scroll", fn);
+    window.addEventListener("resize", fn);
+    return () => {
+      window.removeEventListener("scroll", fn);
+      window.removeEventListener("resize", fn);
+    };
   }, []);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [open]);
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color] duration-300 ${
-        scrolled || open
-          ? "border-b border-[var(--line)] bg-white/90 backdrop-blur-md"
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+        scrolled && !overDark
+          ? "border-b border-[var(--line)] bg-[var(--paper)]/80 backdrop-blur-xl"
           : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 md:h-[72px] md:px-8">
+      <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between px-5 md:px-8">
+        {/* Logo */}
         <Link
-          href="/"
+          href="#top"
           aria-label="a2sea home"
           onClick={() => setOpen(false)}
           className="relative z-50 flex items-center gap-2.5"
@@ -47,69 +57,79 @@ export function Header() {
           <img
             src="/brand/a2sea-mark.png"
             alt=""
-            width={40}
-            height={36}
-            className="h-8 w-auto object-contain md:h-9"
+            width={48}
+            height={44}
+            className="h-9 w-auto object-contain md:h-11"
           />
-          <span className="text-[1.35rem] font-semibold lowercase tracking-[-0.03em] text-[var(--ink)] md:text-[1.5rem]">
+          <span className={`text-[1.6rem] font-bold lowercase leading-none tracking-[-0.02em] md:text-[1.9rem] ${overDark ? "text-white" : "text-[var(--ink)]"}`}>
             a2sea
           </span>
         </Link>
 
+        {/* Desktop nav */}
         <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
           {NAV.map((item) => (
             <Link
               key={item.href}
-              href={`/${item.href}`}
-              className="group relative text-[0.72rem] font-medium uppercase tracking-[0.14em] text-[var(--ink-soft)] transition-colors hover:text-[var(--ink)]"
+              href={item.href}
+              className={`group relative text-[0.72rem] font-medium uppercase tracking-[0.14em] transition-colors duration-200 ${
+                overDark ? "text-white/75 hover:text-white" : "text-[var(--ink-soft)] hover:text-[var(--ink)]"
+              }`}
             >
               {item.label.charAt(0) + item.label.slice(1).toLowerCase()}
-              <span className="absolute -bottom-1 left-0 h-px w-0 bg-[var(--accent)] transition-all duration-300 group-hover:w-full" />
+              <span className="absolute -bottom-1 left-0 h-px w-0 bg-[var(--accent-gold)] transition-all duration-300 group-hover:w-full" />
             </Link>
           ))}
           <MagneticButton
-            href="/#contact"
-            className="btn-classic bg-[var(--ink)] px-5 py-2.5 text-[0.72rem] uppercase tracking-[0.12em] text-white hover:bg-[var(--accent)]"
+            href="#contact"
+            className={`btn-classic px-5 py-2.5 text-[0.72rem] uppercase tracking-[0.12em] ${
+              overDark
+                ? "border border-white/30 bg-white/10 text-white backdrop-blur-sm hover:border-[var(--accent-gold)] hover:bg-white/15"
+                : "bg-[var(--ink)] text-[var(--paper)] hover:bg-[var(--accent-deep)]"
+            }`}
           >
             Get in touch
           </MagneticButton>
         </nav>
 
+        {/* Mobile hamburger */}
         <button
           type="button"
-          className="relative z-50 flex h-11 w-11 items-center justify-center md:hidden"
+          className="relative z-50 flex h-9 w-9 flex-col items-center justify-center gap-[5px] md:hidden"
           aria-expanded={open}
-          aria-label={open ? "Close menu" : "Open menu"}
+          aria-label="Toggle menu"
           onClick={() => setOpen((v) => !v)}
         >
-          <span className={`absolute h-px w-5 bg-[var(--ink)] transition-transform duration-300 ${open ? "rotate-45" : "-translate-y-[4px]"}`} />
-          <span className={`absolute h-px w-5 bg-[var(--ink)] transition-transform duration-300 ${open ? "-rotate-45" : "translate-y-[4px]"}`} />
+          <span className={`h-px w-6 transition-all duration-300 ${overDark && !open ? "bg-white" : "bg-[var(--ink)]"} ${open ? "translate-y-[6px] rotate-45" : ""}`} />
+          <span className={`h-px w-6 transition-all duration-300 ${overDark && !open ? "bg-white" : "bg-[var(--ink)]"} ${open ? "opacity-0" : ""}`} />
+          <span className={`h-px w-6 transition-all duration-300 ${overDark && !open ? "bg-white" : "bg-[var(--ink)]"} ${open ? "-translate-y-[6px] -rotate-45" : ""}`} />
         </button>
       </div>
 
+      {/* Mobile drawer */}
       <AnimatePresence>
         {open && (
           <motion.div
             role="dialog"
             aria-modal="true"
             aria-label="Mobile navigation"
-            initial={reduced ? false : { opacity: 0 }}
+            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 flex flex-col bg-white px-6 pb-10 pt-24 md:hidden"
+            className="fixed inset-0 top-0 z-40 flex flex-col bg-[var(--paper)] px-6 pb-10 pt-28 md:hidden"
           >
             <nav className="flex flex-col" aria-label="Mobile">
               {siteConfig.nav.map((item, i) => (
                 <motion.div
                   key={item.href}
-                  initial={reduced ? false : { opacity: 0, y: 16 }}
+                  initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.04 + i * 0.05, duration: 0.35, ease: EASE }}
+                  transition={{ delay: 0.05 + i * 0.06, duration: 0.3 }}
                 >
                   <Link
-                    href={`/${item.href}`}
-                    className="display block border-b border-[var(--line)] py-5 text-3xl text-[var(--ink)]"
+                    href={item.href}
+                    className="display block border-b border-[var(--line)] py-5 text-3xl text-[var(--ink)] transition-colors hover:text-[var(--accent)]"
                     onClick={() => setOpen(false)}
                   >
                     {item.label.charAt(0) + item.label.slice(1).toLowerCase()}
@@ -117,16 +137,19 @@ export function Header() {
                 </motion.div>
               ))}
             </nav>
-            <div className="mt-auto">
+            <div className="mt-auto flex flex-col gap-3">
               <a
                 href={siteConfig.contact.whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
-                className="flex min-h-12 items-center justify-center bg-[var(--ink)] py-4 text-[0.72rem] font-medium uppercase tracking-[0.12em] text-white"
+                className="flex items-center justify-center rounded btn-classic bg-[var(--ink)] py-4 text-[0.72rem] font-medium uppercase tracking-[0.12em] text-[var(--paper)]"
               >
                 Chat on WhatsApp
               </a>
+              <p className="text-center text-xs text-[var(--muted)]">
+                {siteConfig.contact.phoneDisplay} · {siteConfig.location.city}
+              </p>
             </div>
           </motion.div>
         )}
