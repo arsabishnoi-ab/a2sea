@@ -58,6 +58,13 @@ export const metadata: Metadata = {
     description: siteConfig.seo.description,
     images: [siteConfig.ogImagePath],
   },
+  icons: {
+    icon: [
+      { url: "/favicon-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: "/apple-icon.png",
+  },
   robots: {
     index: true,
     follow: true,
